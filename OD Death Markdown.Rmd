@@ -1,0 +1,107 @@
+---
+title: "Overdose Death Project using SCC Death Data"
+author: "Dawson Coblin"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Hi Wayne!
+
+Thank you again for taking the time to review actual data with me, while helping
+to foster those epidemiological thought processes with that data!
+Following our Philz meeting, I took some time to review the various data sources 
+used to compile and generate the SCC's dashboard for overdose death data. I found 
+that SCC's death data is sourced from California's Vital Records Business 
+Information System (VRBIS). I hit a roadblock in finding a comprehensive data set 
+for overdose death data. After venturing through VRBIS, I, unfortunately, could 
+not access the death data used to generate the SCC dashboard.  
+However, looking through VRBIS, I stumbled across the California Vital Data 
+(Cal-ViDa) Query Tool, which allowed me to create limited characteristic data 
+sets for overdose data that is specific to SCC. I have those files in the 
+repository.  
+
+Given the restricted use of the data sets and the flexibility with the 
+objectives at hand, I took the opportunity to brainstorm theoretical project ideas. 
+I hope you don't mind!  
+
+At the very least, they may be interesting discussion points - Please let me 
+know your thoughts!  
+
+## 1. Geospatial Analysis of Overdose Death Hot-spots  
+
+#### Objective:  
+Identify geographic hot-spots (zipcode level?) within the county for
+overdose deaths.  
+
+#### Focus:  
+Determine whether certain areas (e.g., urban vs. rural, economically
+disadvantaged neighborhoods) have higher rates of overdose deaths.  
+
+#### Methods:  
+Use GIS mapping to visualize overdose death rates across different
+areas in the county, Use those findings to use for other projects or possibly
+provide guidance information to the SCC's overdose coalition group to encourage
+program improvements.  
+
+## 2. Comparing Demographic Risk Factors  
+
+#### Objective:  
+Investigate demographic characteristics (age, gender, race/ethnicity)
+linked to higher overdose death rates.  
+
+#### Focus:  
+Determine which demographic groups are most affected by overdose deaths,
+identifying potential vulnerabilities.  
+
+#### Methods:  
+Use stratified analysis to calculate rates within demographic
+subgroups, highlighting significant differences and exploring social
+determinants of health.  
+
+## 3. Association with Access to SUD Treatments  
+
+#### Objective:  
+Examine how access to SCC opioid and other drug assistance programs for
+overdose help and community-provided services at county facilities that offer
+harm reduction programs correlates with overdose death rates.  
+
+#### Focus:  
+Investigate if regions with limited access to substance abuse services
+have higher overdose death rates.
+
+#### Methods:  
+Map overdose deaths alongside treatment facility locations and perform
+correlation analysis.  
+
+\newpage  
+
+## Included State DataSets
+
+```{r message=FALSE, warning=FALSE}
+library(readr)
+library(tidyr)
+library(dplyr)
+library(tinytex)
+```
+
+```{r Datasets, message=FALSE, warning=FALSE, paged.print=FALSE}
+#Each of the four data sets were generated using limited metrics through Cal-ViDa 
+#(https://cal-vida.cdph.ca.gov/).
+
+SCC_All_Drug_Death_by_Age_Groups_Prelim_2023_11_02_2024 <-read_csv(
+  "SCC_All Drug_Death_by Age Groups_Prelim. 2023_11.02.2024.csv")
+
+SCC_All_Drug_Death_by_Race_Eth_Prelim_2023_11_02_2024 <- read_csv(
+  "SCC_All Drug_Death_by Race_Eth_Prelim. 2023_11.02.2024.csv")
+
+SCC_All_Drug_Related_Overdose_Death_by_Zip_Code_Prelim_2023_11_02_2024 <- read_csv(
+  "SCC_All Drug-Related Overdose_Death_by Zip Code_Prelim. 2023_11.02.2024.csv")
+
+SCC_All_DrugDeath_TimeTrend_11_02_2024 <- read_csv(
+  "SCC_All DrugDeath_TimeTrend_11.02.2024.csv")
+
+```
