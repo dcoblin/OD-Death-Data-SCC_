@@ -9,7 +9,26 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#### Hi Wayne!
+## Meeting and Project Notes  
+
+### (12/1/24): Current Objectives  
+
+Following our meeting on December 1, 2024, I located the coroners dashboard and 
+downloaded the overdose death data for Santa Clara County. I emailed Mile P., to 
+confirm the adequateness for use with r-programming visualization purposes.
+
+The link used for the data set is:
+https://data.sccgov.org/Health/Medical-Examiner-Coroner-Total-Drug-Deaths-dataset/9v2c-rxbj/data
+
+Deliverable: (deliverable due: 12/16/24)
+I will use this data set to review and form age groups (current), to investigate 
+and plot points and formulate theories that will use various statistical models
+( possible future endeavor).
+
+
+### (11/2/24): Revised to 12/1/24 objectives
+
+Hi Wayne!  
 
 Thank you again for taking the time to review actual data with me, while helping
 to foster those epidemiological thought processes with that data!
@@ -31,10 +50,10 @@ I hope you don't mind!
 At the very least, they may be interesting discussion points - Please let me 
 know your thoughts!  
 
-## 1. Geospatial Analysis of Overdose Death Hot-spots  
+### 1. Geospatial Analysis of Overdose Death Hot-spots  
 
 #### Objective:  
-Identify geographic hot-spots (zipcode level?) within the county for
+Identify geographic hot-spots (zip code level?) within the county for
 overdose deaths.  
 
 #### Focus:  
@@ -47,7 +66,7 @@ areas in the county, Use those findings to use for other projects or possibly
 provide guidance information to the SCC's overdose coalition group to encourage
 program improvements.  
 
-## 2. Comparing Demographic Risk Factors  
+### 2. Comparing Demographic Risk Factors  
 
 #### Objective:  
 Investigate demographic characteristics (age, gender, race/ethnicity)
@@ -62,7 +81,7 @@ Use stratified analysis to calculate rates within demographic
 subgroups, highlighting significant differences and exploring social
 determinants of health.  
 
-## 3. Association with Access to SUD Treatments  
+### 3. Association with Access to SUD Treatments  
 
 #### Objective:  
 Examine how access to SCC opioid and other drug assistance programs for
@@ -77,6 +96,9 @@ have higher overdose death rates.
 Map overdose deaths alongside treatment facility locations and perform
 correlation analysis.  
 
+\newpage
+
+
 \newpage  
 
 ## Included State DataSets
@@ -89,19 +111,27 @@ library(tinytex)
 ```
 
 ```{r Datasets, message=FALSE, warning=FALSE, paged.print=FALSE}
-#Each of the four data sets were generated using limited metrics through Cal-ViDa 
-#(https://cal-vida.cdph.ca.gov/).
+#Post 12/1/24 meeting: Data set exported from SCC dashboard #(https://data.sccgov.org/Health/Medical-Examiner-Coroner-Total-Drug-Deaths-dataset/9v2c-rxbj/data).
 
-SCC_All_Drug_Death_by_Age_Groups_Prelim_2023_11_02_2024 <-read_csv(
-  "SCC_All Drug_Death_by Age Groups_Prelim. 2023_11.02.2024.csv")
+Medical_Examiner_Coroner_Total_Drug_Deaths_dataset <- read_csv("~/_Personal/Epi work/SCC OD Death Data Project_Wayne/NEW OD Death Project_Harddrive/OD-Death-Data-SCC_-main/Medical_Examiner-Coroner__Total_Drug_Deaths_dataset.csv")
 
-SCC_All_Drug_Death_by_Race_Eth_Prelim_2023_11_02_2024 <- read_csv(
-  "SCC_All Drug_Death_by Race_Eth_Prelim. 2023_11.02.2024.csv")
-
-SCC_All_Drug_Related_Overdose_Death_by_Zip_Code_Prelim_2023_11_02_2024 <- read_csv(
-  "SCC_All Drug-Related Overdose_Death_by Zip Code_Prelim. 2023_11.02.2024.csv")
-
-SCC_All_DrugDeath_TimeTrend_11_02_2024 <- read_csv(
-  "SCC_All DrugDeath_TimeTrend_11.02.2024.csv")
-
+View(Medical_Examiner_Coroner_Total_Drug_Deaths_dataset)
 ```
+
+```{r}
+#Creating age groups using group by and aggregate:
+
+Age_Brackets_name_1 <- Medical_Examiner_Coroner_Total_Drug_Deaths_dataset %>%
+  mutate(Age_Brackets = cut(Age, breaks = c(0, 20, 30, 40, 50, 60, 70, 80, 90),
+                            labels = c("0-20", "21-30", "31-40", "41-50",
+                                       "51-60", "61-70", "71-80", "81-90")))
+
+
+
+Age_Brackets_Table<- 
+  Age_Brackets_name_1 %>% group_by(Age_Brackets) %>%
+  summarise(count = n(), .groups = "drop")
+
+View(Age_Brackets_Table)
+```
+
