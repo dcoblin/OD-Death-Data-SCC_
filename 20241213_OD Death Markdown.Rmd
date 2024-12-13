@@ -1,0 +1,145 @@
+---
+title: "Overdose Death Project using SCC Death Data"
+author: "Dawson Coblin"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Meeting and Project Notes  
+
+### (12/1/24): Current Objectives  
+
+Following our meeting on December 1, 2024, I located the coroners dashboard and 
+downloaded the overdose death data for Santa Clara County. I emailed Mile P., to 
+confirm the adequateness for use with r-programming visualization purposes.
+
+The link used for the data set is:
+https://data.sccgov.org/Health/Medical-Examiner-Coroner-Total-Drug-Deaths-dataset/9v2c-rxbj/data
+
+Deliverable: (deliverable due: 12/16/24)
+I will use this data set to review and form age groups (current), to investigate 
+and plot points and formulate theories that will use various statistical models.
+
+PPDAC Model (TBD)
+Problem:
+Plan:
+Data:
+Analysis:
+Conclusion:
+
+### (11/2/24): Revised to 12/1/24 objectives
+
+Hi Wayne!  
+
+Thank you again for taking the time to review actual data with me, while helping
+to foster those epidemiological thought processes with that data!
+Following our Philz meeting, I took some time to review the various data sources 
+used to compile and generate the SCC's dashboard for overdose death data. I found 
+that SCC's death data is sourced from California's Vital Records Business 
+Information System (VRBIS). I hit a roadblock in finding a comprehensive data set 
+for overdose death data. After venturing through VRBIS, I, unfortunately, could 
+not access the death data used to generate the SCC dashboard.  
+However, looking through VRBIS, I stumbled across the California Vital Data 
+(Cal-ViDa) Query Tool, which allowed me to create limited characteristic data 
+sets for overdose data that is specific to SCC. I have those files in the 
+repository.  
+
+Given the restricted use of the data sets and the flexibility with the 
+objectives at hand, I took the opportunity to brainstorm theoretical project ideas. 
+I hope you don't mind!  
+
+At the very least, they may be interesting discussion points - Please let me 
+know your thoughts!  
+
+### 1. Geospatial Analysis of Overdose Death Hot-spots  
+
+#### Objective:  
+Identify geographic hot-spots (zip code level?) within the county for
+overdose deaths.  
+
+#### Focus:  
+Determine whether certain areas (e.g., urban vs. rural, economically
+disadvantaged neighborhoods) have higher rates of overdose deaths.  
+
+#### Methods:  
+Use GIS mapping to visualize overdose death rates across different
+areas in the county, Use those findings to use for other projects or possibly
+provide guidance information to the SCC's overdose coalition group to encourage
+program improvements.  
+
+### 2. Comparing Demographic Risk Factors  
+
+#### Objective:  
+Investigate demographic characteristics (age, gender, race/ethnicity)
+linked to higher overdose death rates.  
+
+#### Focus:  
+Determine which demographic groups are most affected by overdose deaths,
+identifying potential vulnerabilities.  
+
+#### Methods:  
+Use stratified analysis to calculate rates within demographic
+subgroups, highlighting significant differences and exploring social
+determinants of health.  
+
+### 3. Association with Access to SUD Treatments  
+
+#### Objective:  
+Examine how access to SCC opioid and other drug assistance programs for
+overdose help and community-provided services at county facilities that offer
+harm reduction programs correlates with overdose death rates.  
+
+#### Focus:  
+Investigate if regions with limited access to substance abuse services
+have higher overdose death rates.
+
+#### Methods:  
+Map overdose deaths alongside treatment facility locations and perform
+correlation analysis.  
+
+\newpage
+
+
+\newpage  
+
+## Included State DataSets
+
+```{r message=FALSE, warning=FALSE}
+library(readr)
+library(tidyr)
+library(dplyr)
+library(tinytex)
+library(ggplot2)
+```
+
+```{r Datasets, message=FALSE, warning=FALSE, paged.print=FALSE}
+#Post 12/1/24 meeting: Data set exported from SCC dashboard #(https://data.sccgov.org/Health/Medical-Examiner-Coroner-Total-Drug-Deaths-dataset/9v2c-rxbj/data).
+
+Medical_Examiner_Coroner_Total_Drug_Deaths_dataset <- read_csv("~/_Personal/Epi work/SCC OD Death Data Project_Wayne/NEW OD Death Project_Harddrive/OD-Death-Data-SCC_-main/Medical_Examiner-Coroner__Total_Drug_Deaths_dataset.csv")
+
+View(Medical_Examiner_Coroner_Total_Drug_Deaths_dataset)
+```
+
+```{r}
+#Creating age groups using group by and aggregate:
+
+Age_Brackets_name_1 <- Medical_Examiner_Coroner_Total_Drug_Deaths_dataset %>%
+  mutate(Age_Brackets = cut(Age, breaks = c(0, 20, 30, 40, 50, 60, 70, 80, 90),
+                            labels = c("0-20", "21-30", "31-40", "41-50",
+                                       "51-60", "61-70", "71-80", "81-90")))
+
+
+
+Age_Brackets_Table<- 
+  Age_Brackets_name_1 %>% group_by(Age_Brackets) %>%
+  summarise(count = n(), .groups = "drop")
+
+View(Age_Brackets_Table)
+
+ggplot(data = Age_Brackets_Table, mapping = aes(x= Age_Brackets, 
+                                                y= count))
+```
